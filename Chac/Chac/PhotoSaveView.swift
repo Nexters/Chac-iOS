@@ -66,7 +66,7 @@ struct PhotoSaveView: View {
     @ViewBuilder
     private func moveButton(title: String, backgroundColor: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Text("목록으로")
+            Text(title)
                 .font(.system(size: 16))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)

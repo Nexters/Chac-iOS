@@ -51,6 +51,9 @@ struct PhotoSelectView: View {
                 LazyVGrid(columns: columns) {
                     ForEach(0..<tempCount) { index in
                         photo()
+                            .onTapGesture {
+                                // TODO: 사진 선택
+                            }
                             .onLongPressGesture(minimumDuration: 0.3) {
                                 print(#function, "\(index) long press")
                                 moveToPhotoDetailView = true
