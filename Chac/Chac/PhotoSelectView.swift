@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct PhotoSelectView: View {
-    @State private var moveToNextView = false
+    @State private var moveToPhotoSaveView = false
+    @State private var moveToPhotoDetailView = false
     
     private let tempCount = 40
     private let columns = [
@@ -50,6 +51,10 @@ struct PhotoSelectView: View {
                 LazyVGrid(columns: columns) {
                     ForEach(0..<tempCount) { index in
                         photo()
+                            .onLongPressGesture(minimumDuration: 0.3) {
+                                print(#function, "\(index) long press")
+                                moveToPhotoDetailView = true
+                            }
                     }
                 }
             }
@@ -60,7 +65,7 @@ struct PhotoSelectView: View {
         .padding(.top, 12)
         .overlay(alignment: .bottom) {
             Button {
-                moveToNextView = true
+                moveToPhotoSaveView = true
             } label: {
                 Text("사진을 선택해주세요")
                     .foregroundStyle(.black.opacity(0.7))
@@ -76,8 +81,11 @@ struct PhotoSelectView: View {
             .background(.white)
         }
         .navigationTitle("사진 선택")
-        .fullScreenCover(isPresented: $moveToNextView) {
+        .fullScreenCover(isPresented: $moveToPhotoSaveView) {
             PhotoSaveView()
+        }
+        .fullScreenCover(isPresented: $moveToPhotoDetailView) {
+            PhotoDetailView()
         }
     }
     
