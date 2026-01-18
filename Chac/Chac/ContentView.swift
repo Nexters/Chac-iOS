@@ -14,16 +14,16 @@ struct ContentView: View {
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             MainView()
-                .environmentObject(coordinator)
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .main:
-                        MainView().environmentObject(coordinator)
+                        MainView()
                     case .next:
-                        NextView().environmentObject(coordinator)
+                        NextView()
                     }
                 }
         }
+        .environmentObject(coordinator)
     }
 }
 
