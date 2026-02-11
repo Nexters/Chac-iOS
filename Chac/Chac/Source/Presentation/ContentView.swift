@@ -12,17 +12,30 @@ struct ContentView: View {
     @StateObject private var coordinator = NavigationCoordinator()
     @StateObject private var permissionManger = DefaultPhotoLibraryPermissionManager()
     @StateObject private var photoLibraryStore = PhotoLibraryStore()
+    @State private var showSplash = true
     
     var body: some View {
-        NavigationStack(path: $coordinator.path) {
-            MainView()
-                .navigationDestination(for: Route.self) { route in
-                    destinationView(for: route)
+        ZStack {
+            if showSplash {
+                SplashView()
+            } else {
+                NavigationStack(path: $coordinator.path) {
+                    MainView()
+                        .navigationDestination(for: Route.self) { route in
+                            destinationView(for: route)
+                        }
                 }
+                .environmentObject(coordinator)
+                .environmentObject(permissionManger)
+                .environmentObject(photoLibraryStore)
+            }
         }
-        .environmentObject(coordinator)
-        .environmentObject(permissionManger)
-        .environmentObject(photoLibraryStore)
+        .task {
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            withAnimation {
+                showSplash = false
+            }
+        }
     }
     
     @ViewBuilder
