@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import Photos
 
 enum Route: Hashable {
     case main
     case photoSelect(isTotal: Bool, index: Int?)
+    case editAlbumName(assets: [PHAsset], albumName: String)
 }
