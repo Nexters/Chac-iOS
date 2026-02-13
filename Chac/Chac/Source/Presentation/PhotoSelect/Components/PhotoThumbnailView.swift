@@ -14,6 +14,7 @@ struct PhotoThumbnailView: View {
     
     let phAsset: PHAsset
     let targetSize: CGSize
+    var isSelectView: Bool = true
     var isSelected: Bool = false
     
     var body: some View {
@@ -54,6 +55,7 @@ struct PhotoThumbnailView: View {
                         .frame(width: 20, height: 20)
                 )
                 .padding(10)
+                .opacity(isSelectView ? 1.0 : 0.0)
         }
         .task {
             await loadThumbnailIfNeeded()

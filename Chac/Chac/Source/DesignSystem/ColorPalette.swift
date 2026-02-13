@@ -35,6 +35,7 @@ enum ColorPalette {
     static let white_5 = Color(hex: 0xFFFFFF).opacity(0.05)
     static let black_80 = Color(hex: 0x000000).opacity(0.8)
     static let black_70 = Color(hex: 0x000000).opacity(0.7)
+    static let black_60 = Color(hex: 0x000000).opacity(0.6)
     static let black_40 = Color(hex: 0x000000).opacity(0.4)
     
     static let point_01 = Color(hex: 0x14BCCC)
