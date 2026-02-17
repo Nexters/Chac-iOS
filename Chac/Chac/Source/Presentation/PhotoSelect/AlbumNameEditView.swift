@@ -18,6 +18,7 @@ struct AlbumNameEditView: View {
     private enum Metric {
         static let topMargin = ScreenSize.height * 0.07
         static let thumbnailSize: CGFloat = 120
+        static let thumbnailCornerRadius: CGFloat = 16
     }
     
     private let assets: [PHAsset]
@@ -33,6 +34,7 @@ struct AlbumNameEditView: View {
             PhotoThumbnailView(
                 phAsset: assets.first ?? PHAsset(),
                 targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize),
+                cornerRadius: Metric.thumbnailCornerRadius,
                 isSelectView: false
             )
             .background(backThumbnailView())
@@ -87,9 +89,10 @@ struct AlbumNameEditView: View {
             PhotoThumbnailView(
                 phAsset: assets[1],
                 targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize),
+                cornerRadius: Metric.thumbnailCornerRadius,
                 isSelectView: false
             )
-            .overlay(ColorPalette.black_60.clipShape(RoundedRectangle(cornerRadius: 12)))
+            .overlay(ColorPalette.black_60.clipShape(RoundedRectangle(cornerRadius: Metric.thumbnailCornerRadius)))
             .rotationEffect(.degrees(10))
         } else {
             Color.clear
