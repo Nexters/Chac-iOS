@@ -35,15 +35,7 @@ struct AlbumNameEditView: View {
                 targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize),
                 isSelectView: false
             )
-            .background(
-                PhotoThumbnailView(
-                    phAsset: assets.first ?? PHAsset(),
-                    targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize),
-                    isSelectView: false
-                )
-                .overlay(ColorPalette.black_60.clipShape(RoundedRectangle(cornerRadius: 12)))
-                .rotationEffect(.degrees(10))
-            )
+            .background(backThumbnailView())
             .padding(.top, Metric.topMargin)
             
             VStack(alignment: .leading, spacing: 8) {
@@ -87,6 +79,21 @@ struct AlbumNameEditView: View {
         .padding(.horizontal, 20)
         .background(ColorPalette.background)
         .navigationTitle(Strings.navigationTitle)
+    }
+    
+    @ViewBuilder
+    private func backThumbnailView() -> some View {
+        if assets.count > 1 {
+            PhotoThumbnailView(
+                phAsset: assets[1],
+                targetSize: CGSize(width: Metric.thumbnailSize, height: Metric.thumbnailSize),
+                isSelectView: false
+            )
+            .overlay(ColorPalette.black_60.clipShape(RoundedRectangle(cornerRadius: 12)))
+            .rotationEffect(.degrees(10))
+        } else {
+            Color.clear
+        }
     }
     
     @ViewBuilder
