@@ -21,8 +21,12 @@ struct AlbumNameEditView: View {
         static let thumbnailCornerRadius: CGFloat = 16
     }
     
-    private let assets: [PHAsset]
+    @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
+    @State private var showPhotoSaveView = false
     @State private var albumName: String
+    @State private var savedCount = 0
+    
+    private let assets: [PHAsset]
     
     init(assets: [PHAsset], albumName: String) {
         self.assets = assets
@@ -75,12 +79,15 @@ struct AlbumNameEditView: View {
                 titleColor: ColorPalette.text_btn_01,
                 backgroundColor: ColorPalette.primary
             ) {
-                
+                Task { await savePhotos() }
             }
         }
         .padding(.horizontal, 20)
         .background(ColorPalette.background)
         .navigationTitle(Strings.navigationTitle)
+        .fullScreenCover(isPresented: $showPhotoSaveView) {
+            PhotoSaveView(savedCount: $savedCount)
+        }
     }
     
     @ViewBuilder
@@ -108,6 +115,19 @@ struct AlbumNameEditView: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 54)
                 .background(RoundedRectangle(cornerRadius: 12).fill(backgroundColor))
+        }
+    }
+    
+    private func savePhotos() async {
+        do {
+            try await photoLibraryStore.saveToAlbum(
+                assets: assets,
+                albumName: albumName
+            )
+            savedCount = assets.count
+            showPhotoSaveView = true
+        } catch {
+            print("앨범 저장 실패: \(error.localizedDescription)")
         }
     }
 }
