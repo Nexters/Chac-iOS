@@ -27,9 +27,11 @@ struct AlbumNameEditView: View {
     @State private var savedCount = 0
     
     private let assets: [PHAsset]
+    private let locationText: String
     
     init(assets: [PHAsset], albumName: String) {
         self.assets = assets
+        self.locationText = albumName
         self._albumName = State(initialValue: albumName)
     }
     
@@ -52,7 +54,9 @@ struct AlbumNameEditView: View {
                 
                 HStack(spacing: 10) {
                     TextField(text: $albumName) {
-                        
+                        Text(locationText)
+                            .chacFont(.sub_title_01)
+                            .foregroundStyle(ColorPalette.text_04)
                     }
                     .chacFont(.sub_title_01)
                     .foregroundStyle(ColorPalette.text_01)
@@ -122,7 +126,7 @@ struct AlbumNameEditView: View {
         do {
             try await photoLibraryStore.saveToAlbum(
                 assets: assets,
-                albumName: albumName
+                albumName: albumName.isEmpty ? locationText : albumName
             )
             savedCount = assets.count
             showPhotoSaveView = true
