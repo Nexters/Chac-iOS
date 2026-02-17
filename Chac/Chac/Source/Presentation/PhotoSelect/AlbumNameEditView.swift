@@ -13,6 +13,7 @@ struct AlbumNameEditView: View {
     private enum Strings {
         static let navigationTitle = "앨범명 변경"
         static let albumName = "앨범명"
+        static let failToSaveAlert = "앨범 저장에 실패했습니다"
     }
     
     private enum Metric {
@@ -22,6 +23,7 @@ struct AlbumNameEditView: View {
     }
     
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
+    @State private var showFailedAlert = false
     @State private var showPhotoSaveView = false
     @State private var albumName: String
     @State private var savedCount = 0
@@ -89,6 +91,9 @@ struct AlbumNameEditView: View {
         .padding(.horizontal, 20)
         .background(ColorPalette.background)
         .navigationTitle(Strings.navigationTitle)
+        .alert(Strings.failToSaveAlert, isPresented: $showFailedAlert) {
+            Button("확인") { showFailedAlert = false }
+        }
         .fullScreenCover(isPresented: $showPhotoSaveView) {
             PhotoSaveView(savedCount: $savedCount)
         }
@@ -132,6 +137,7 @@ struct AlbumNameEditView: View {
             showPhotoSaveView = true
         } catch {
             print("앨범 저장 실패: \(error.localizedDescription)")
+            showFailedAlert = true
         }
     }
 }
