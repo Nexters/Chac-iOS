@@ -30,8 +30,10 @@ struct AlbumNameEditView: View {
     
     private let assets: [PHAsset]
     private let locationText: String
+    private let clusterIndex: Int?
     
-    init(assets: [PHAsset], albumName: String) {
+    init(clusterIndex: Int?, assets: [PHAsset], albumName: String) {
+        self.clusterIndex = clusterIndex
         self.assets = assets
         self.locationText = albumName
         self._albumName = State(initialValue: albumName)
@@ -133,6 +135,10 @@ struct AlbumNameEditView: View {
                 assets: assets,
                 albumName: albumName.isEmpty ? locationText : albumName
             )
+            photoLibraryStore.removeSavedAssets(
+                at: clusterIndex,
+                identifiers: Set(assets.map(\.localIdentifier))
+            )
             savedCount = assets.count
             showPhotoSaveView = true
         } catch {
@@ -143,5 +149,5 @@ struct AlbumNameEditView: View {
 }
 
 #Preview {
-    AlbumNameEditView(assets: [], albumName: "샘플 앨범")
+    AlbumNameEditView(clusterIndex: nil, assets: [], albumName: "샘플 앨범")
 }

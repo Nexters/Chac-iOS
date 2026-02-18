@@ -34,6 +34,7 @@ struct PhotoSelectView: View {
     @State private var showPopup = false
     
     let cluster: PhotoCluster
+    let clusterIndex: Int?
     
     private let columns = [
         GridItem(.flexible()),
@@ -41,8 +42,9 @@ struct PhotoSelectView: View {
         GridItem(.flexible())
     ]
     
-    init(cluster: PhotoCluster) {
+    init(cluster: PhotoCluster, clusterIndex: Int? = nil) {
         self.cluster = cluster
+        self.clusterIndex = clusterIndex
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor(cgColor: ColorPalette.background.cgColor!)
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -124,6 +126,7 @@ struct PhotoSelectView: View {
             
             Button {
                 coordinator.push(.editAlbumName(
+                    clusterIndex: clusterIndex,
                     assets: Array(selectedAssets),
                     albumName: cluster.title
                 ))
