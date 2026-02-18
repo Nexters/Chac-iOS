@@ -25,16 +25,16 @@ struct PhotoSelectView: View {
     }
     
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     @Environment(\.dismiss) var dismiss
-    @State private var moveToPhotoSaveView = false
     @State private var moveToPhotoDetailView = false
     @State private var longPressedAsset: PHAsset?
     @State private var isSelectAll: Bool = false
     @State private var selectedAssets: Set<PHAsset> = []
-    @State private var savedCount = 0
     @State private var showPopup = false
     
     let cluster: PhotoCluster
+    let clusterIndex: Int?
     
     private let columns = [
         GridItem(.flexible()),
@@ -42,8 +42,9 @@ struct PhotoSelectView: View {
         GridItem(.flexible())
     ]
     
-    init(cluster: PhotoCluster) {
+    init(cluster: PhotoCluster, clusterIndex: Int? = nil) {
         self.cluster = cluster
+        self.clusterIndex = clusterIndex
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor(cgColor: ColorPalette.background.cgColor!)
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -124,9 +125,11 @@ struct PhotoSelectView: View {
             .padding(.top, 20)
             
             Button {
-                Task {
-                    await savePhotos()
-                }
+                coordinator.push(.editAlbumName(
+                    clusterIndex: clusterIndex,
+                    assets: Array(selectedAssets),
+                    albumName: cluster.title
+                ))
             } label: {
                 Text(selectedAssets.isEmpty ? Strings.selectPhotoDescription : "\(selectedAssets.count)장의 사진 앨범에 저장")
                     .chacFont(.btn)
@@ -147,9 +150,6 @@ struct PhotoSelectView: View {
         .navigationTitle(Strings.selectPhoto)
         .navigationBarBackButtonHidden()
         .preferredColorScheme(.dark)
-        .fullScreenCover(isPresented: $moveToPhotoSaveView) {
-            PhotoSaveView(savedCount: $savedCount)
-        }
         .fullScreenCover(isPresented: $moveToPhotoDetailView) {
             PhotoDetailView(phAsset: $longPressedAsset, title: cluster.title)
         }
@@ -191,18 +191,6 @@ struct PhotoSelectView: View {
         }
     }
     
-    private func savePhotos() async {
-        do {
-            try await photoLibraryStore.saveToAlbum(
-                assets: Array(selectedAssets),
-                albumName: cluster.title
-            )
-            savedCount = selectedAssets.count
-            moveToPhotoSaveView = true
-        } catch {
-            print("앨범 저장 실패: \(error.localizedDescription)")
-        }
-    }
 }
 
 //#Preview {

@@ -35,12 +35,14 @@ struct ContentView: View {
                 PhotoSelectView(cluster: PhotoCluster(id: UUID(), title: "모든 사진", phAssets: photoLibraryStore.photos))
             } else if let index = index {
                 if index < photoLibraryStore.clusters.count {
-                    PhotoSelectView(cluster: photoLibraryStore.clusters[index])
+                    PhotoSelectView(cluster: photoLibraryStore.clusters[index], clusterIndex: index)
                 } else {
                     Text("클러스터를 찾을 수 없습니다.")
                 }
             }
             
+        case .editAlbumName(let clusterIndex, let assets, let albumName):
+            AlbumNameEditView(clusterIndex: clusterIndex, assets: assets, albumName: albumName)
         }
     }
 }
