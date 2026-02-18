@@ -102,6 +102,9 @@ struct MainView: View {
         }
         .background(ColorPalette.background)
         .preferredColorScheme(.dark)
+        .onAppear {
+            handlePermissionStatus(permissionManager.permissionStatus)
+        }
         .onChange(of: scenePhase, { _, newValue in
             switch newValue {
             case .active: handlePermissionStatus(permissionManager.permissionStatus)
