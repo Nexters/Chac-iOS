@@ -22,6 +22,7 @@ struct PhotoSelectView: View {
     
     private enum Metric {
         static let horizontalPadding: CGFloat = 20
+        static let gradientHeight: CGFloat = 54
         static let thumbnailSize: CGFloat = (ScreenSize.width - (Metric.horizontalPadding * 3)) / 3
     }
     
@@ -123,7 +124,19 @@ struct PhotoSelectView: View {
                 .padding(.horizontal, Metric.horizontalPadding)
             }
             .padding(.top, 20)
-            
+            .overlay(alignment: .bottom) {
+                LinearGradient(
+                    colors: [
+                        ColorPalette.background.opacity(0),
+                        ColorPalette.background.opacity(0.6),
+                        ColorPalette.background
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: Metric.gradientHeight)
+                .allowsHitTesting(false)
+            }
             Button {
                 Task {
                     await savePhotos()
@@ -136,19 +149,7 @@ struct PhotoSelectView: View {
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(
-                                selectedAssets.isEmpty ?
-                                LinearGradient(
-                                    colors: [ColorPalette.disable, ColorPalette.disable.opacity(0.3)],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                ) :
-                                    LinearGradient(
-                                        colors: [ColorPalette.primary, ColorPalette.primary.opacity(0.3)],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    )
-                            )
+                            .fill(selectedAssets.isEmpty ?ColorPalette.disable : ColorPalette.primary)
                     )
             }
             .disabled(selectedAssets.isEmpty)
