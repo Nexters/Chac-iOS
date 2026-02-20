@@ -45,6 +45,22 @@ final class PhotoLibraryStore: ObservableObject {
         try await libraryService.saveToAlbum(assets: assets, albumName: albumName)
     }
     
+    /// 저장된 사진들을 해당 클러스터에서 제거합니다. (빈 클러스터는 자동 삭제)
+    func removeSavedAssets(at clusterIndex: Int?, identifiers: Set<String>) {
+        guard let clusterIndex, clusterIndex < clusters.count else { return }
+        
+        let remaining = clusters[clusterIndex].phAssets.filter { !identifiers.contains($0.localIdentifier) }
+        if remaining.isEmpty {
+            clusters.remove(at: clusterIndex)
+        } else {
+            clusters[clusterIndex] = PhotoCluster(
+                id: clusters[clusterIndex].id,
+                title: clusters[clusterIndex].title,
+                phAssets: remaining
+            )
+        }
+    }
+    
     private func processClustering() async {
         guard !photos.isEmpty else { return }
         

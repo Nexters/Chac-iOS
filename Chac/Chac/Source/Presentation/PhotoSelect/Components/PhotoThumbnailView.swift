@@ -18,6 +18,8 @@ struct PhotoThumbnailView: View {
     
     let phAsset: PHAsset
     let targetSize: CGSize
+    var cornerRadius: CGFloat = 12
+    var isSelectView: Bool = true
     var isSelected: Bool = false
     
     var body: some View {
@@ -37,10 +39,10 @@ struct PhotoThumbnailView: View {
             }
             .frame(width: targetSize.width, height: targetSize.height)
             .clipped()
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .contentShape(RoundedRectangle(cornerRadius: 12))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
             .overlay {
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(isSelected ? Color.black.opacity(0.6) : .clear)
                     .stroke(isSelected ? ColorPalette.stroke_01 : .clear, lineWidth: 1)
             }
@@ -58,6 +60,7 @@ struct PhotoThumbnailView: View {
                         .frame(width: 20, height: 20)
                 )
                 .padding(10)
+                .opacity(isSelectView ? 1.0 : 0.0)
         }
         .task {
             await loadThumbnailIfNeeded()

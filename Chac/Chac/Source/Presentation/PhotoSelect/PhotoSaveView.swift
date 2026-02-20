@@ -44,7 +44,7 @@ struct PhotoSaveView: View {
             Image("save_complete_icon")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 117)
+                .frame(width: 140)
                 .padding(.top, Metric.topMargin)
             
             Text(Strings.completeSave)
