@@ -15,6 +15,7 @@ struct OnboardingView: View {
         static let skip = "건너뛰기"
     }
     
+    @AppStorage(AppStorageKey.hasLaunched) private var hasLaunched = false
     @State private var currentPage: Int = 0
     private let totalPages = 4
     
@@ -28,6 +29,9 @@ struct OnboardingView: View {
 
     var body: some View {
         ZStack {
+            ColorPalette.background
+                .ignoresSafeArea()
+
             // MARK: - Pages
             TabView(selection: $currentPage) {
                 OnboardingFirstPageView()
@@ -46,9 +50,7 @@ struct OnboardingView: View {
                 // MARK: - Navigation Bar
                 HStack {
                     Button {
-                        withAnimation {
-                            currentPage -= 1
-                        }
+                        currentPage -= 1
                     } label: {
                         Image("back_icon")
                             .resizable()
@@ -61,7 +63,7 @@ struct OnboardingView: View {
                     Spacer()
 
                     Button {
-                        // TODO: 건너뛰기 액션
+                        hasLaunched = true
                     } label: {
                         Text(Strings.skip)
                             .chacFont(.toast_body)
@@ -82,11 +84,9 @@ struct OnboardingView: View {
 
                     CTAButton(title: isLastPage ? Strings.start : Strings.next) {
                         if isLastPage {
-                            
+                            hasLaunched = true
                         } else {
-                            withAnimation {
-                                currentPage += 1
-                            }
+                            currentPage += 1
                         }
                     }
                     .padding([.horizontal, .top], 20)
