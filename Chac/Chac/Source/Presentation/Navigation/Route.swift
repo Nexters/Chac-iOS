@@ -12,4 +12,5 @@ enum Route: Hashable {
     case main
     case photoSelect(isTotal: Bool, index: Int?)
     case editAlbumName(clusterIndex: Int?, assets: [PHAsset], albumName: String)
+    case setting
 }
