@@ -43,14 +43,13 @@ struct MainView: View {
                     .frame(width: 64, height: 22)
                 Spacer()
                 Button {
-                    // TODO: 설정 화면으로 이동
+                    coordinator.push(.setting)
                 } label: {
                     Image("setting_icon")
                         .resizable()
                         .scaledToFit()
                         .frame(width: Metric.settingIconSize, height: Metric.settingIconSize)
                 }
-                .hidden()   // FIXME: 추후에 사용
             }
             .frame(height: 52)
             .padding(.horizontal, Metric.horizontalPadding)
