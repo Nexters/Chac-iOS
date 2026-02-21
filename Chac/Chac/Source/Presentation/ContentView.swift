@@ -43,6 +43,8 @@ struct ContentView: View {
             
         case .editAlbumName(let clusterIndex, let assets, let albumName):
             AlbumNameEditView(clusterIndex: clusterIndex, assets: assets, albumName: albumName)
+        case .setting:
+            SettingView()
         }
     }
 }
