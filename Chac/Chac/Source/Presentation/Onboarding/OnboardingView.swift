@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    
+    public enum Strings {
+        static let next = "다음"
+        static let start = "시작하기"
+    }
+    
     @State private var currentPage: Int = 0
     private let totalPages = 4
+    
+    private var isLastPage: Bool {
+        currentPage == totalPages - 1
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -25,11 +35,22 @@ struct OnboardingView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             .ignoresSafeArea()
 
-            OnboardingPageControl(
-                currentPage: currentPage,
-                totalPages: totalPages
-            )
-            .padding(.bottom, 60)
+            VStack(spacing: 30) {
+                OnboardingPageControl(
+                    currentPage: currentPage,
+                    totalPages: totalPages
+                )
+
+                CTAButton(title: isLastPage ? Strings.start : Strings.next) {
+                    if isLastPage {
+                        
+                    } else {
+                        currentPage += 1
+                    }
+                }
+                .padding([.horizontal, .top], 20)
+            }
+            .padding(.bottom, 40)
         }
     }
 }
