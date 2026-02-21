@@ -56,6 +56,8 @@ struct OnboardingView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 24, height: 24)
+                            .padding(10)
+                            .contentShape(Rectangle())
                     }
                     .opacity(isFirstPage ? 0 : 1)
                     .disabled(isFirstPage)
