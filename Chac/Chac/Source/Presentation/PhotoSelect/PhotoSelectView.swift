@@ -9,18 +9,20 @@ import SwiftUI
 import Photos
 
 struct PhotoSelectView: View {
-
+    
     private enum Strings {
         static let selectAll = "전체 선택"
         static let cancelSelectAll = "전체 해제"
         static let selectPhoto = "사진 정리"
         static let selectPhotoDescription = "사진을 선택해주세요"
+        static let nextDescription = "다음"
         static let backPopupTitle = "페이지 나가기"
         static let backPopupDescription = "선택된 내용은 저장되지 않습니다.\n페이지를 나가시겠어요?"
     }
     
     private enum Metric {
         static let horizontalPadding: CGFloat = 20
+        static let gradientHeight: CGFloat = 54
         static let thumbnailSize: CGFloat = (ScreenSize.width - (Metric.horizontalPadding * 3)) / 3
     }
     
@@ -88,9 +90,9 @@ struct PhotoSelectView: View {
                     .foregroundStyle(ColorPalette.text_02)
                 
                 RoundedRectangle(cornerRadius: 2)
-                        .fill(ColorPalette.etc)
-                        .frame(width: 1.5, height: 10)
-                        .rotationEffect(.degrees(30))
+                    .fill(ColorPalette.etc)
+                    .frame(width: 1.5, height: 10)
+                    .rotationEffect(.degrees(30))
                 
                 Text("\(cluster.phAssets.count)")
                     .chacFont(.number)
@@ -123,7 +125,19 @@ struct PhotoSelectView: View {
                 .padding(.horizontal, Metric.horizontalPadding)
             }
             .padding(.top, 20)
-            
+            .overlay(alignment: .bottom) {
+                LinearGradient(
+                    colors: [
+                        ColorPalette.background.opacity(0),
+                        ColorPalette.background.opacity(0.6),
+                        ColorPalette.background
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: Metric.gradientHeight)
+                .allowsHitTesting(false)
+            }
             Button {
                 coordinator.push(.editAlbumName(
                     clusterIndex: clusterIndex,
@@ -131,14 +145,14 @@ struct PhotoSelectView: View {
                     albumName: cluster.title
                 ))
             } label: {
-                Text(selectedAssets.isEmpty ? Strings.selectPhotoDescription : "\(selectedAssets.count)장의 사진 앨범에 저장")
+                Text(selectedAssets.isEmpty ? Strings.selectPhotoDescription : Strings.nextDescription)
                     .chacFont(.btn)
                     .foregroundStyle(selectedAssets.isEmpty ? ColorPalette.text_btn_03 : ColorPalette.text_btn_01)
                     .padding(.vertical, 17.5)
                     .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(selectedAssets.isEmpty ? ColorPalette.disable : ColorPalette.primary)
+                            .fill(selectedAssets.isEmpty ?ColorPalette.disable : ColorPalette.primary)
                     )
             }
             .disabled(selectedAssets.isEmpty)
