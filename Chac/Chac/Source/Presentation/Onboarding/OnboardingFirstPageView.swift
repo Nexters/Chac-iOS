@@ -33,7 +33,7 @@ struct OnboardingFirstPageView: View {
 
                 Spacer()
             }
-            .padding(.top, 60)
+            .padding(.top, 112)
         }
         
     }

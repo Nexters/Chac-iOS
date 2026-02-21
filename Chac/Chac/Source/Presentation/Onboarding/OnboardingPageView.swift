@@ -56,7 +56,7 @@ struct OnboardingPageView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 20)
-        .padding(.top, 94)
+        .padding(.top, 146)
         .background(ColorPalette.background)
     }
 }
