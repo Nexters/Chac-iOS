@@ -73,7 +73,7 @@ struct PhotoDetailView: View {
         do {
             image = try await photoLibraryStore.requestThumbnail(
                 for: phAsset,
-                targetSize: CGSize(width: Metric.targetWidth, height: Metric.targetWidth)
+                targetSize: PHImageManagerMaximumSize
             )
         } catch {
             print("Failed to load thumbnail: \(error.localizedDescription)")

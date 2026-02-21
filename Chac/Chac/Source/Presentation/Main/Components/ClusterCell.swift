@@ -12,6 +12,7 @@ struct ClusterCell: View {
     
     private enum Metric {
         static let imageSize: CGFloat = 72
+        static let scaleFactor: CGFloat = 2.0
     }
     
     @EnvironmentObject private var photoLibraryStore: PhotoLibraryStore
@@ -63,7 +64,10 @@ struct ClusterCell: View {
             do {
                 thumbnailImage = try await photoLibraryStore.requestThumbnail(
                     for: viewModel.thumbnailPHAsset,
-                    targetSize: .init(width: Metric.imageSize, height: Metric.imageSize)
+                    targetSize: .init(
+                        width: Metric.imageSize * Metric.scaleFactor,
+                        height: Metric.imageSize * Metric.scaleFactor
+                    )
                 )
             } catch {
                 print(error.localizedDescription)
