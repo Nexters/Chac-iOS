@@ -82,13 +82,10 @@ struct AlbumNameEditView: View {
             
             Spacer()
             
-            moveButton(
-                title: "\(assets.count)장의 사진 앨범에 저장",
-                titleColor: ColorPalette.text_btn_01,
-                backgroundColor: ColorPalette.primary
-            ) {
+            CTAButton(title: "\(assets.count)장의 사진 앨범에 저장") {
                 Task { await savePhotos() }
             }
+            
         }
         .padding(.horizontal, 20)
         .background(ColorPalette.background)
@@ -114,18 +111,6 @@ struct AlbumNameEditView: View {
             .rotationEffect(.degrees(10))
         } else {
             Color.clear
-        }
-    }
-    
-    @ViewBuilder
-    private func moveButton(title: String, titleColor: Color, backgroundColor: Color, action: @escaping () -> Void) -> some View { // TODO: 공통 컴포넌트로 분리
-        Button(action: action) {
-            Text(title)
-                .chacFont(.btn)
-                .foregroundStyle(titleColor)
-                .frame(maxWidth: .infinity)
-                .frame(height: 54)
-                .background(RoundedRectangle(cornerRadius: 12).fill(backgroundColor))
         }
     }
     
