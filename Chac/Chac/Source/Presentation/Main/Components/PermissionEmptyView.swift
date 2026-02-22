@@ -28,11 +28,7 @@ struct PermissionEmptyView: View {
                 .foregroundStyle(ColorPalette.text_03)
                 .padding(.top, Metric.topMargin)
             
-            moveButton(
-                title: Strings.goToSetting,
-                titleColor: ColorPalette.text_btn_01,
-                backgroundColor: ColorPalette.primary
-            ) {
+            CTAButton(title: Strings.goToSetting) {
                 permissionManager.openSettings()
             }
             .frame(width: 156)
@@ -42,17 +38,6 @@ struct PermissionEmptyView: View {
         }
     }
     
-    @ViewBuilder
-    private func moveButton(title: String, titleColor: Color, backgroundColor: Color, action: @escaping () -> Void) -> some View { // TODO: 공통 컴포넌트로 분리
-        Button(action: action) {
-            Text(title)
-                .chacFont(.btn)
-                .foregroundStyle(titleColor)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(RoundedRectangle(cornerRadius: 12).fill(backgroundColor))
-        }
-    }
 }
 
 #Preview {

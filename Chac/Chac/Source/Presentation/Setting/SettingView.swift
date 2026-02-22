@@ -23,6 +23,8 @@ struct SettingView: View {
         static let listItemVerticalPadding: CGFloat = 10
     }
     
+    @AppStorage(AppStorageKey.hasLaunched) private var hasLaunched = false
+    @EnvironmentObject private var coordinator: NavigationCoordinator
     @State private var isPresentPrivacyPolicy = false
     
     var body: some View {
@@ -33,7 +35,8 @@ struct SettingView: View {
                 }
                 .disabled(true)
                 listItem(title: Strings.showOnboardingAgain) {
-                    // TODO: 온보딩 화면 다시보기
+                    coordinator.popToRoot()
+                    hasLaunched = false
                 }
                 listItem(title: Strings.showPrivacyPolicy) {
                     isPresentPrivacyPolicy = true

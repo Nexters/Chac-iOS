@@ -9,20 +9,25 @@ import SwiftUI
 
 
 struct ContentView: View {
+    @AppStorage(AppStorageKey.hasLaunched) private var hasLaunched = false
     @StateObject private var coordinator = NavigationCoordinator()
     @StateObject private var permissionManger = DefaultPhotoLibraryPermissionManager()
     @StateObject private var photoLibraryStore = PhotoLibraryStore()
     
     var body: some View {
-        NavigationStack(path: $coordinator.path) {
-            MainView()
-                .navigationDestination(for: Route.self) { route in
-                    destinationView(for: route)
-                }
+        if hasLaunched {
+            NavigationStack(path: $coordinator.path) {
+                MainView()
+                    .navigationDestination(for: Route.self) { route in
+                        destinationView(for: route)
+                    }
+            }
+            .environmentObject(coordinator)
+            .environmentObject(permissionManger)
+            .environmentObject(photoLibraryStore)
+        } else {
+            OnboardingView()
         }
-        .environmentObject(coordinator)
-        .environmentObject(permissionManger)
-        .environmentObject(photoLibraryStore)
     }
     
     @ViewBuilder

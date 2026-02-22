@@ -138,22 +138,16 @@ struct PhotoSelectView: View {
                 .frame(height: Metric.gradientHeight)
                 .allowsHitTesting(false)
             }
-            Button {
+            
+            CTAButton(
+                title: selectedAssets.isEmpty ? Strings.selectPhotoDescription : Strings.nextDescription,
+                disabled: selectedAssets.isEmpty
+            ) {
                 coordinator.push(.editAlbumName(
                     clusterIndex: clusterIndex,
                     assets: Array(selectedAssets),
                     albumName: cluster.title
                 ))
-            } label: {
-                Text(selectedAssets.isEmpty ? Strings.selectPhotoDescription : Strings.nextDescription)
-                    .chacFont(.btn)
-                    .foregroundStyle(selectedAssets.isEmpty ? ColorPalette.text_btn_03 : ColorPalette.text_btn_01)
-                    .padding(.vertical, 17.5)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(selectedAssets.isEmpty ?ColorPalette.disable : ColorPalette.primary)
-                    )
             }
             .disabled(selectedAssets.isEmpty)
             .padding(.horizontal, Metric.horizontalPadding)
