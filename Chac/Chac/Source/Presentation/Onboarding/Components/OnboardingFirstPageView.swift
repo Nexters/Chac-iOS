@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OnboardingFirstPageView: View {
     
-    public enum Strings {
+    private enum Strings {
         static let title = "사진을 정리해\n앨범을 생성해주는 착"
     }
     

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     
-    public enum Strings {
+    private enum Strings {
         static let next = "다음"
         static let start = "시작하기"
         static let skip = "건너뛰기"
